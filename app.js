@@ -35,11 +35,11 @@ main.addEventListener("click", (e) => {
       let player = "X";
       whoPlay.innerText = `O turn`;
       block.firstChild.innerText = player;
-      block.style.backgroundColor = "blue";
+      block.style.backgroundColor = "#003049";
 
       Xs[block.id] = true;
       if (winnerChecker(Xs)) {
-        alert("X won");
+        console.log("X won");
       } else {
         console.log("didn't win yet");
       }
@@ -47,11 +47,11 @@ main.addEventListener("click", (e) => {
       let player = "O";
       whoPlay.innerText = `X turn`;
       block.firstChild.innerText = player;
-      block.style.backgroundColor = "red";
+      block.style.backgroundColor = "#c1121f";
 
       Os[block.id] = true;
       if (winnerChecker(Os)) {
-        alert("O won");
+        console.log("O won");
       } else {
         console.log("didn't win yet!");
       }
