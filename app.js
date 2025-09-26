@@ -1,4 +1,3 @@
-// alert("hi");
 const cells = document.querySelectorAll(".block");
 const main = document.querySelector("main");
 // const header = document.querySelector("h1");
