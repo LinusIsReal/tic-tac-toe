@@ -2,6 +2,8 @@ const cells = document.querySelectorAll(".block");
 const main = document.querySelector("main");
 // const header = document.querySelector("h1");
 const whoPlay = document.querySelector("#turnIndicator");
+const restart = document.querySelector("#restart");
+
 const winConditions = [
   [0, 1, 2], // row 1
   [3, 4, 5], // row 2
@@ -15,12 +17,28 @@ const winConditions = [
 let flag = true;
 const Xs = [];
 const Os = [];
-const winnerChecker = (array) => {
+Xs[9] = 0;
+Os[9] = 0;
+let Xwins = Xs[9];
+let Owins = Os[9];
+
+const winnerChecker = (array, player) => {
   for (let winCondition of winConditions) {
     let [a, b, c] = winCondition;
-    if (array[a] && array[b] && array[c]) return true;
+    if (array[a] && array[b] && array[c]) {
+      for (let cell of cells) {
+        cell.classList.add("disabled");
+      }
+      restart.classList.toggle("disabled");
+      array[9]++;
+      whoPlay.innerText = `--------- ${player} won! ---------`;
+    }
   }
-  return false;
+};
+const refresh = (array) => {
+  for (let i = 0; i < 9; i++) {
+    array[i] = undefined;
+  }
 };
 
 const flipFlag = () => {
@@ -30,7 +48,7 @@ const flipFlag = () => {
 main.addEventListener("click", (e) => {
   if (e.target.className === "block") {
     const block = e.target;
-    // console.dir(block);
+    console.log(`X:${Xwins}, O:${Owins}`);
     if (flag) {
       let player = "X";
       whoPlay.innerText = `O turn`;
@@ -38,11 +56,7 @@ main.addEventListener("click", (e) => {
       block.style.backgroundColor = "#003049";
 
       Xs[block.id] = true;
-      if (winnerChecker(Xs)) {
-        console.log("X won");
-      } else {
-        console.log("didn't win yet");
-      }
+      winnerChecker(Xs, player);
     } else {
       let player = "O";
       whoPlay.innerText = `X turn`;
@@ -50,12 +64,23 @@ main.addEventListener("click", (e) => {
       block.style.backgroundColor = "#c1121f";
 
       Os[block.id] = true;
-      if (winnerChecker(Os)) {
-        console.log("O won");
-      } else {
-        console.log("didn't win yet!");
-      }
+      winnerChecker(Os, player);
     }
+
     flipFlag();
   }
+});
+restart.addEventListener("click", () => {
+  for (let cell of cells) {
+    cell.classList.remove("disabled");
+    cell.style.backgroundColor = "rgba(0,0,0,0)";
+    cell.firstChild.innerText = "";
+  }
+  refresh(Xs);
+  refresh(Os);
+  // Xs = [];
+  // Os = [];
+  flag = true;
+  whoPlay.innerText = `X turn`;
+  restart.classList.toggle("disabled");
 });
