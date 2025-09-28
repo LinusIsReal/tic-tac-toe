@@ -21,8 +21,6 @@ const Os = [];
 // 9th elements stores the wins count..
 Xs[9] = 0;
 Os[9] = 0;
-let Xwins = Xs[9];
-let Owins = Os[9];
 
 const winnerChecker = (array, player) => {
   for (let winCondition of winConditions) {
@@ -80,8 +78,6 @@ restart.addEventListener("click", () => {
   }
   refresh(Xs);
   refresh(Os);
-  // Xs = [];
-  // Os = [];
   flag = true;
   whoPlay.innerText = `X turn`;
   restart.classList.toggle("disabled");
