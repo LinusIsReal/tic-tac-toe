@@ -17,6 +17,8 @@ const winConditions = [
 let flag = true;
 const Xs = [];
 const Os = [];
+
+// 9th elements stores the wins count..
 Xs[9] = 0;
 Os[9] = 0;
 let Xwins = Xs[9];
@@ -48,7 +50,7 @@ const flipFlag = () => {
 main.addEventListener("click", (e) => {
   if (e.target.className === "block") {
     const block = e.target;
-    console.log(`X:${Xwins}, O:${Owins}`);
+    console.log(`X:${Xs[9]}, O:${Os[9]}`);
     if (flag) {
       let player = "X";
       whoPlay.innerText = `O turn`;
