@@ -15,11 +15,6 @@ const winConditions = [
   [2, 4, 6], // diagonal
 ];
 let flag = true;
-// const Xs = [];
-// const Os = [];
-// 9th elements stores the wins count..
-// Xs[9] = 0;
-// Os[9] = 0;
 
 // unified board for both players..
 const board = [];
@@ -54,7 +49,6 @@ const checkSelectedTile = (block, moveValue) => {
     console.log("wrong move!");
   }
 };
-//======================================================================
 const draw= () =>{
   for(let element of board){
     if(element===undefined){
@@ -75,10 +69,6 @@ const winnerChecker = (board) => {
     let [a, b, c] = winCondition;
     if (board[a] && board[a] === board[b] && board[b] === board[c]) {
       disable();
-      // for (let cell of cells) {
-      //   cell.classList.toggle("disabled");
-      // }
-      // restart.classList.toggle("disabled");
 
       // win message..
       if (flag) {
@@ -92,19 +82,10 @@ const winnerChecker = (board) => {
       }
       return;
     }
-  //   else if(board.some((element)=>{ element === undefined })){
-  //     console.log("'tis fine");
-  //   }else{
-  //     restart.classList.toggle("disabled");
-  //   }
   }
   if(draw()){
       whoPlay.innerText= `--------- tie! ---------`;
       disable();
-      // for (let cell of cells) {
-      //   cell.classList.toggle("disabled");
-      // }
-      // restart.classList.toggle("disabled");
     }
 };
 const refresh = () => {
@@ -124,26 +105,10 @@ main.addEventListener("click", (e) => {
     // console.log(`X:${Xs[9]}, O:${Os[9]}`);
 
     if (flag) {
-      // let player = "X";
-      // whoPlay.innerText = `O turn`;
-      // block.firstChild.innerText = player;
-      // block.style.backgroundColor = "#003049";
-
-      // Xs[block.id] = true;
       checkSelectedTile(block, 1);
-      // winnerChecker(Xs, player);
     } else {
-      // let player = "O";
-      // whoPlay.innerText = `X turn`;
-      // block.firstChild.innerText = player;
-      // block.style.backgroundColor = "#c1121f";
-
-      // Os[block.id] = true;
       checkSelectedTile(block, 2);
-      // winnerChecker(Os, player);
     }
-
-    // flipFlag();
   }
 });
 restart.addEventListener("click", () => {
@@ -152,8 +117,6 @@ restart.addEventListener("click", () => {
     cell.style.backgroundColor = "rgba(0,0,0,0)";
     cell.firstChild.innerText = "";
   }
-  // refresh(Xs);
-  // refresh(Os);
   refresh();
   flag = true;
   whoPlay.innerText = `X turn`;
