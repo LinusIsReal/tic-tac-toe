@@ -31,7 +31,7 @@ board[10] = 0; //O win count
 const checkSelectedTile = (block, moveValue) => {
   if (board[block.id] === undefined) {
     // assign the move value..
-    board[block.id] += moveValue;
+    board[block.id] = moveValue;
     //X code..
     if (flag) {
       let player = "X";
@@ -56,6 +56,7 @@ const checkSelectedTile = (block, moveValue) => {
 };
 
 const winnerChecker = (board) => {
+  let player = flag ? 1 : 2;
   for (let winCondition of winConditions) {
     let [a, b, c] = winCondition;
     if (board[a] && board[a] === board[b] && board[b] === board[c]) {
@@ -94,7 +95,7 @@ main.addEventListener("click", (e) => {
     // console.log(`X:${Xs[9]}, O:${Os[9]}`);
 
     if (flag) {
-      let player = "X";
+      // let player = "X";
       // whoPlay.innerText = `O turn`;
       // block.firstChild.innerText = player;
       // block.style.backgroundColor = "#003049";
@@ -103,7 +104,7 @@ main.addEventListener("click", (e) => {
       checkSelectedTile(block, 1);
       // winnerChecker(Xs, player);
     } else {
-      let player = "O";
+      // let player = "O";
       // whoPlay.innerText = `X turn`;
       // block.firstChild.innerText = player;
       // block.style.backgroundColor = "#c1121f";
