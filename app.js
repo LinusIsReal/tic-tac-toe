@@ -15,11 +15,11 @@ const winConditions = [
   [2, 4, 6], // diagonal
 ];
 let flag = true;
-const Xs = [];
-const Os = [];
+// const Xs = [];
+// const Os = [];
 // 9th elements stores the wins count..
-Xs[9] = 0;
-Os[9] = 0;
+// Xs[9] = 0;
+// Os[9] = 0;
 
 // unified board for both players..
 const board = [];
@@ -54,16 +54,31 @@ const checkSelectedTile = (block, moveValue) => {
     console.log("wrong move!");
   }
 };
+//======================================================================
+const draw= () =>{
+  for(let element of board){
+    if(element===undefined){
+      return false;
+    }
+  }
+  return true;
+}
+const disable=()=>{
+  for (let cell of cells) {
+    cell.classList.toggle("disabled");
+    }
+  restart.classList.toggle("disabled");
+}
 
 const winnerChecker = (board) => {
-  let player = flag ? 1 : 2;
   for (let winCondition of winConditions) {
     let [a, b, c] = winCondition;
     if (board[a] && board[a] === board[b] && board[b] === board[c]) {
-      for (let cell of cells) {
-        cell.classList.add("disabled");
-      }
-      restart.classList.toggle("disabled");
+      disable();
+      // for (let cell of cells) {
+      //   cell.classList.toggle("disabled");
+      // }
+      // restart.classList.toggle("disabled");
 
       // win message..
       if (flag) {
@@ -75,12 +90,26 @@ const winnerChecker = (board) => {
         console.log(`X:${board[9]}, O:${board[10]}`);
         whoPlay.innerText = `--------- O won! ---------`;
       }
+      return;
     }
+  //   else if(board.some((element)=>{ element === undefined })){
+  //     console.log("'tis fine");
+  //   }else{
+  //     restart.classList.toggle("disabled");
+  //   }
   }
+  if(draw()){
+      whoPlay.innerText= `--------- tie! ---------`;
+      disable();
+      // for (let cell of cells) {
+      //   cell.classList.toggle("disabled");
+      // }
+      // restart.classList.toggle("disabled");
+    }
 };
-const refresh = (array) => {
+const refresh = () => {
   for (let i = 0; i < 9; i++) {
-    array[i] = undefined;
+    board[i] = undefined;
   }
 };
 
@@ -119,12 +148,13 @@ main.addEventListener("click", (e) => {
 });
 restart.addEventListener("click", () => {
   for (let cell of cells) {
-    cell.classList.remove("disabled");
+    cell.classList.toggle("disabled");
     cell.style.backgroundColor = "rgba(0,0,0,0)";
     cell.firstChild.innerText = "";
   }
-  refresh(Xs);
-  refresh(Os);
+  // refresh(Xs);
+  // refresh(Os);
+  refresh();
   flag = true;
   whoPlay.innerText = `X turn`;
   restart.classList.toggle("disabled");
