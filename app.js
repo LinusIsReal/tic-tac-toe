@@ -2,6 +2,8 @@ const cells = document.querySelectorAll(".block");
 const main = document.querySelector("main");
 // const header = document.querySelector("h1");
 const whoPlay = document.querySelector("#turnIndicator");
+const restart = document.querySelector("#restart");
+
 const winConditions = [
   [0, 1, 2], // row 1
   [3, 4, 5], // row 2
@@ -13,14 +15,83 @@ const winConditions = [
   [2, 4, 6], // diagonal
 ];
 let flag = true;
-const Xs = [];
-const Os = [];
-const winnerChecker = (array) => {
+
+// unified board for both players..
+const board = [];
+board[9] = 0; //X win count
+board[10] = 0; //O win count
+
+//X moves value:1, O moves valus:2
+//prevents contradicion from occuring
+const checkSelectedTile = (block, moveValue) => {
+  if (board[block.id] === undefined) {
+    // assign the move value..
+    board[block.id] = moveValue;
+    //X code..
+    if (flag) {
+      let player = "X";
+      whoPlay.innerText = `O turn`;
+      block.firstChild.innerText = player;
+      block.style.backgroundColor = "#003049";
+      console.log("X move");
+    }
+    // O code..
+    else {
+      let player = "O";
+      whoPlay.innerText = `X turn`;
+      block.firstChild.innerText = player;
+      block.style.backgroundColor = "#c1121f";
+      console.log("O move");
+    }
+    winnerChecker(board);
+    flipFlag();
+  } else {
+    console.log("wrong move!");
+  }
+};
+const draw= () =>{
+  for(let element of board){
+    if(element===undefined){
+      return false;
+    }
+  }
+  return true;
+}
+const disable=()=>{
+  for (let cell of cells) {
+    cell.classList.toggle("disabled");
+    }
+  restart.classList.toggle("disabled");
+}
+
+const winnerChecker = (board) => {
   for (let winCondition of winConditions) {
     let [a, b, c] = winCondition;
-    if (array[a] && array[b] && array[c]) return true;
+    if (board[a] && board[a] === board[b] && board[b] === board[c]) {
+      disable();
+
+      // win message..
+      if (flag) {
+        board[9]++;
+        console.log(`X:${board[9]}, O:${board[10]}`);
+        whoPlay.innerText = `--------- X won! ---------`;
+      } else {
+        board[10]++;
+        console.log(`X:${board[9]}, O:${board[10]}`);
+        whoPlay.innerText = `--------- O won! ---------`;
+      }
+      return;
+    }
   }
-  return false;
+  if(draw()){
+      whoPlay.innerText= `--------- tie! ---------`;
+      disable();
+    }
+};
+const refresh = () => {
+  for (let i = 0; i < 9; i++) {
+    board[i] = undefined;
+  }
 };
 
 const flipFlag = () => {
@@ -30,32 +101,24 @@ const flipFlag = () => {
 main.addEventListener("click", (e) => {
   if (e.target.className === "block") {
     const block = e.target;
-    // console.dir(block);
+    // result..
+    // console.log(`X:${Xs[9]}, O:${Os[9]}`);
+
     if (flag) {
-      let player = "X";
-      whoPlay.innerText = `O turn`;
-      block.firstChild.innerText = player;
-      block.style.backgroundColor = "#003049";
-
-      Xs[block.id] = true;
-      if (winnerChecker(Xs)) {
-        console.log("X won");
-      } else {
-        console.log("didn't win yet");
-      }
+      checkSelectedTile(block, 1);
     } else {
-      let player = "O";
-      whoPlay.innerText = `X turn`;
-      block.firstChild.innerText = player;
-      block.style.backgroundColor = "#c1121f";
-
-      Os[block.id] = true;
-      if (winnerChecker(Os)) {
-        console.log("O won");
-      } else {
-        console.log("didn't win yet!");
-      }
+      checkSelectedTile(block, 2);
     }
-    flipFlag();
   }
+});
+restart.addEventListener("click", () => {
+  for (let cell of cells) {
+    cell.classList.toggle("disabled");
+    cell.style.backgroundColor = "rgba(0,0,0,0)";
+    cell.firstChild.innerText = "";
+  }
+  refresh();
+  flag = true;
+  whoPlay.innerText = `X turn`;
+  restart.classList.toggle("disabled");
 });
