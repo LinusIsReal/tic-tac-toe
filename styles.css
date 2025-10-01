@@ -61,6 +61,33 @@ main {
 .block span {
   align-self: center;
 }
+#panel {
+  width: 15rem;
+  height: 4rem;
+  box-shadow: 0 1rem 1rem 0.1rem rgba(246, 246, 247, 0.134);
+  background-color: #fca311;
+  border: 2px solid azure;
+  border-radius: 5px;
+
+  position: absolute;
+  justify-self: center;
+  top: 10rem;
+  z-index: 20;
+  transition: opacity 2000ms;
+}
+#panel h1 {
+  justify-self: center;
+  align-self: center;
+}
+.show {
+  display: block;
+  opacity: 1;
+  transition-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+.hide {
+  opacity: 0;
+  display: none;
+}
 
 @media (max-width: 600px) {
   h2 {

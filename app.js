@@ -3,6 +3,7 @@ const main = document.querySelector("main");
 // const header = document.querySelector("h1");
 const whoPlay = document.querySelector("#turnIndicator");
 const restart = document.querySelector("#restart");
+const resultPanel = document.querySelector("#panel");
 
 const winConditions = [
   [0, 1, 2], // row 1
@@ -49,27 +50,31 @@ const checkSelectedTile = (block, moveValue) => {
     console.log("wrong move!");
   }
 };
-const draw= () =>{
-  for(let element of board){
-    if(element===undefined){
+// draw function..
+const draw = () => {
+  for (let element of board) {
+    if (element === undefined) {
       return false;
     }
   }
   return true;
-}
-const disable=()=>{
+};
+// disable tiles..
+const disable = () => {
   for (let cell of cells) {
     cell.classList.toggle("disabled");
-    }
+  }
   restart.classList.toggle("disabled");
-}
+
+  // resultPanel.classList.toggle("hide");
+  // resultPanel.classList.toggle("show");
+  // resultPanel.firstChild.innerText = `X:${board[9]} | O:${board[10]}`;
+};
 
 const winnerChecker = (board) => {
   for (let winCondition of winConditions) {
     let [a, b, c] = winCondition;
     if (board[a] && board[a] === board[b] && board[b] === board[c]) {
-      disable();
-
       // win message..
       if (flag) {
         board[9]++;
@@ -80,13 +85,15 @@ const winnerChecker = (board) => {
         console.log(`X:${board[9]}, O:${board[10]}`);
         whoPlay.innerText = `--------- O won! ---------`;
       }
+      disable();
+
       return;
     }
   }
-  if(draw()){
-      whoPlay.innerText= `--------- tie! ---------`;
-      disable();
-    }
+  if (draw()) {
+    whoPlay.innerText = `--------- tie! ---------`;
+    disable();
+  }
 };
 const refresh = () => {
   for (let i = 0; i < 9; i++) {
@@ -98,12 +105,14 @@ const flipFlag = () => {
   flag = !flag;
 };
 
+// resultPanel.addEventListener('click',(e)=>{
+//   if(!resultPanel.classList.contains('hide')){
+//     resultPanel.classList.toggle('hide',true);
+//   }
+// })
 main.addEventListener("click", (e) => {
   if (e.target.className === "block") {
     const block = e.target;
-    // result..
-    // console.log(`X:${Xs[9]}, O:${Os[9]}`);
-
     if (flag) {
       checkSelectedTile(block, 1);
     } else {
@@ -112,11 +121,15 @@ main.addEventListener("click", (e) => {
   }
 });
 restart.addEventListener("click", () => {
+  // resultPanel.classList.toggle("hide", true);
+  // resultPanel.classList.toggle("show", false);
+  console.log("clicked");
   for (let cell of cells) {
-    cell.classList.toggle("disabled");
     cell.style.backgroundColor = "rgba(0,0,0,0)";
     cell.firstChild.innerText = "";
   }
+  disable();
+  
   refresh();
   flag = true;
   whoPlay.innerText = `X turn`;
