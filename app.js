@@ -133,5 +133,5 @@ restart.addEventListener("click", () => {
   refresh();
   flag = true;
   whoPlay.innerText = `X turn`;
-  restart.classList.toggle("disabled");
+  // restart.classList.toggle("disabled");
 });
